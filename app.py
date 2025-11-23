@@ -54,7 +54,7 @@ st.markdown("""
     .stTextInput > div {
         padding: 0 !important;
         border-radius: 25px !important;
-        overflow: visible !important;  /* Prevent curve clipping */
+        overflow: hidden !important;  /* clip inner edges for perfect curve */
         height: 56px !important;
         display: flex !important;
         align-items: center !important;
@@ -70,6 +70,7 @@ st.markdown("""
         padding: 0 20px !important;
         line-height: 56px !important;
         box-sizing: border-box !important;
+        color: black !important;   /* <--- forces black text */
     }
 
     /* FORCE BUTTON HEIGHT */
