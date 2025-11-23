@@ -72,19 +72,6 @@ st.markdown("""
         box-sizing: border-box !important;
     }
 
-        /* Hide "Press Enter" message */
-    .stTextInput > label {
-        display: block !important;
-    }
-    
-    .stTextInput > label > div[data-testid="stMarkdownContainer"] {
-        display: none !important;
-    }
-    
-    .stTextInput [data-testid="InputInstructions"] {
-        display: none !important;
-    }
-    
     /* FORCE BUTTON HEIGHT */
     .stButton button {
         background-color: #ffb4c8 !important;
