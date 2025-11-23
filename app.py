@@ -41,31 +41,32 @@ st.markdown("""
     }
     
     /* Title styling - centered */
-    .main-title {
+    h1 {
         color: #2d2d2d;
         font-size: 2.8rem;
         margin-bottom: 1rem;
         font-weight: 700;
-        text-align: center;
+        text-align: center !important;
     }
     
     .subtitle {
         color: #666;
         font-size: 1.1rem;
         line-height: 1.6;
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: center;
+        text-align: center !important;
+        display: block;
+        width: 100%;
     }
     
-    /* Input box styling */
+    /* Input box styling - EXACT height */
     .stTextInput > div > div > input {
         background-color: #f5f5f5;
         border: 1px solid #e8e8e8;
         border-radius: 25px;
-        padding: 18px 25px;
+        padding: 0px 25px;
         font-size: 16px;
-        height: 56px;
+        height: 54px !important;
+        line-height: 54px;
     }
     
     /* Hide the "Press Enter to apply" text */
@@ -73,7 +74,7 @@ st.markdown("""
         display: none;
     }
     
-    /* Button styling - same height as input */
+    /* Button styling - EXACT same height as input */
     .stButton > button {
         background-color: #ffb4c8;
         color: white;
@@ -83,20 +84,21 @@ st.markdown("""
         border: none;
         font-weight: 500;
         width: 100%;
-        height: 56px;
+        height: 54px !important;
+        line-height: 54px;
     }
     
     .stButton > button:hover {
         background-color: #ff9bb3;
     }
     
-    /* Portrait styling - perfect circle */
+    /* Portrait styling - back to original size */
     .stImage img {
         border-radius: 50% !important;
         border: 6px solid #ffb4c8 !important;
         object-fit: cover !important;
-        width: 200px !important;
-        height: 200px !important;
+        width: 180px !important;
+        height: 180px !important;
     }
     
     /* Label pill */
@@ -174,11 +176,9 @@ Output: "Would you grant me the pleasure of your tender company this lovely even
 
 Now, transform this with beauty and romance:'''
 
-# Centered title section
-st.markdown('<div class="title-section">', unsafe_allow_html=True)
-st.markdown('<h1 class="main-title">Bring Romance to Dating Apps</h1>', unsafe_allow_html=True)
+# Title section - properly centered
+st.markdown('<h1 style="text-align: center;">Bring Romance to Dating Apps</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">This one line generator leverages hundreds of pages of letters from "Dangerous Connections" to help you seduce with a romantic touch.</p>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -192,8 +192,8 @@ if 'user_input_saved' not in st.session_state:
 chat_col1, chat_col2 = st.columns([1, 4])
 
 with chat_col1:
-    # Portrait - bigger circle
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=200)
+    # Portrait - back to 180px
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
 
 with chat_col2:
     # Only show input label if there's no output yet
