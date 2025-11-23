@@ -72,11 +72,6 @@ st.markdown("""
         box-sizing: border-box !important;
     }
     
-    /* Hide "Press Enter" */
-    .stTextInput > label > div:last-child {
-        display: none !important;
-    }
-    
     /* FORCE BUTTON HEIGHT */
     .stButton button {
         background-color: #ffb4c8 !important;
