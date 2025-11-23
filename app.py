@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS to match the design
+# Custom CSS to match the design exactly
 st.markdown("""
 <style>
     /* White background */
@@ -25,24 +25,25 @@ st.markdown("""
     .block-container {
         padding-top: 3rem;
         padding-bottom: 3rem;
-        max-width: 900px;
+        max-width: 1000px;
     }
     
-    /* Input box styling */
+    /* Input box styling - wider and cleaner */
     .stTextInput > div > div > input {
-        background-color: #f8f9fa;
-        border: 1px solid #e0e0e0;
-        border-radius: 20px;
-        padding: 15px 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #e8e8e8;
+        border-radius: 25px;
+        padding: 18px 25px;
         font-size: 16px;
+        width: 100%;
     }
     
     /* Button styling */
     .stButton > button {
         background-color: #ffb4c8;
         color: white;
-        border-radius: 20px;
-        padding: 12px 40px;
+        border-radius: 25px;
+        padding: 15px 50px;
         font-size: 16px;
         border: none;
         font-weight: 500;
@@ -52,50 +53,43 @@ st.markdown("""
         background-color: #ff9bb3;
     }
     
-    /* Output boxes */
-    .input-label {
+    /* Label styling - small pink pills */
+    .label-pill {
         background-color: #ffb4c8;
         color: white;
-        padding: 8px 20px;
-        border-radius: 15px;
-        display: inline-block;
-        font-size: 14px;
-        margin-bottom: 10px;
-        font-weight: 500;
-    }
-    
-    .output-label {
-        background-color: #ffb4c8;
-        color: white;
-        padding: 8px 20px;
-        border-radius: 15px;
-        display: inline-block;
-        font-size: 14px;
-        margin-bottom: 10px;
-        font-weight: 500;
-    }
-    
-    .message-box {
-        background-color: #f8f9fa;
+        padding: 6px 18px;
         border-radius: 20px;
-        padding: 20px 25px;
-        margin: 10px 0 30px 0;
-        font-size: 18px;
+        display: inline-block;
+        font-size: 13px;
+        margin-bottom: 15px;
+        font-weight: 400;
+    }
+    
+    /* Message boxes - speech bubble style with shadow */
+    .message-bubble {
+        background-color: white;
+        border-radius: 25px;
+        padding: 25px 30px;
+        margin: 10px 0 40px 0;
+        font-size: 19px;
         line-height: 1.6;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        color: #333;
     }
     
     /* Title styling */
     h1 {
-        color: #333;
-        font-size: 2.5rem;
+        color: #2d2d2d;
+        font-size: 2.8rem;
         margin-bottom: 1rem;
+        font-weight: 700;
     }
     
     .subtitle {
         color: #666;
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        line-height: 1.5;
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
     }
     
     /* Portrait styling */
@@ -104,17 +98,23 @@ st.markdown("""
         margin: 2rem 0;
     }
     
-    /* Hide default streamlit image styling */
-    .stImage {
-        text-align: center;
-    }
-    
+    /* Image styling - circular with pink border */
     img {
         border-radius: 50% !important;
-        border: 5px solid #ffb4c8;
+        border: 6px solid #ffb4c8;
         object-fit: cover;
-        width: 180px !important;
-        height: 180px !important;
+    }
+    
+    /* Spacing adjustments */
+    .stMarkdown {
+        margin-bottom: 0;
+    }
+    
+    /* Divider */
+    hr {
+        margin: 2rem 0;
+        border: none;
+        border-top: 1px solid #e8e8e8;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -163,12 +163,12 @@ Output: "Would you grant me the pleasure of your tender company this lovely even
 Now, transform this with beauty and romance:'''
 
 # Main layout
-col1, col2 = st.columns([1, 2])
+col1, col2 = st.columns([1, 2.5])
 
 with col1:
     # Portrait image
     st.markdown('<div class="portrait-container">', unsafe_allow_html=True)
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/0/05/Juliette_Récamier_%281777-1849%29.jpg", width=200)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
@@ -211,9 +211,9 @@ if st.button("Give me a line!"):
 
 # Display messages if they exist
 if st.session_state.input_message:
-    st.markdown('<span class="input-label">input</span>', unsafe_allow_html=True)
-    st.markdown(f'<div class="message-box">{st.session_state.input_message}</div>', unsafe_allow_html=True)
+    st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="message-bubble">{st.session_state.input_message}</div>', unsafe_allow_html=True)
 
 if st.session_state.output_message:
-    st.markdown('<span class="output-label">romantic version</span>', unsafe_allow_html=True)
-    st.markdown(f'<div class="message-box">{st.session_state.output_message}</div>', unsafe_allow_html=True)
+    st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="message-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
