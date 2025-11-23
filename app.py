@@ -40,6 +40,7 @@ st.markdown("""
         font-size: 2.8rem;
         margin-bottom: 1rem;
         font-weight: 700;
+        text-align: center;
     }
     
     .subtitle {
@@ -48,6 +49,7 @@ st.markdown("""
         line-height: 1.6;
         max-width: 800px;
         margin: 0 auto;
+        text-align: center;
     }
     
     /* Input box styling */
@@ -59,16 +61,16 @@ st.markdown("""
         font-size: 16px;
     }
     
-    /* Button styling */
+    /* Button styling - smaller */
     .stButton > button {
         background-color: #ffb4c8;
         color: white;
         border-radius: 25px;
-        padding: 15px 50px;
-        font-size: 16px;
+        padding: 12px 30px;
+        font-size: 14px;
         border: none;
         font-weight: 500;
-        margin-bottom: 20px;
+        width: 100%;
     }
     
     .stButton > button:hover {
@@ -179,11 +181,8 @@ with chat_col1:
     st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
 
 with chat_col2:
-    # Input bubble with label
-    st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
-    
     # Input and button on same line
-    col_input, col_button = st.columns([4, 1])
+    col_input, col_button = st.columns([5, 1.5])
     with col_input:
         user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
                                   label_visibility="collapsed", key="input_field")
@@ -219,7 +218,7 @@ with chat_col2:
         st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="speech-bubble">{st.session_state.user_input}</div>', unsafe_allow_html=True)
     
-    # Output bubble
-    if st.session_state.output_message:
+    # Output bubble - only show if there's actually output
+    if st.session_state.output_message and st.session_state.user_input:
         st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="speech-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
