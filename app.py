@@ -203,7 +203,7 @@ with chat_col2:
     col_input, col_button = st.columns([5, 1.5])
     with col_input:
         user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
-                                  label_visibility="collapsed", key="input_field", on_change=_noop)
+                                  label_visibility="collapsed", key="input_field")
     with col_button:
         generate_button = st.button("Give me a line!")
     
