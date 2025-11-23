@@ -49,17 +49,25 @@ st.markdown("""
         display: block;
         width: 100%;
     }
+
+    /* Text input wrapper */
+    .stTextInput > div {
+        padding: 0 !important;
+        border-radius: 25px !important;
+        overflow: visible !important;  /* Prevent curve clipping */
+        height: 56px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
     
-    /* FORCE INPUT HEIGHT */
+    /* Actual input element */
     .stTextInput input {
         background-color: #f5f5f5 !important;
         border: 1px solid #e8e8e8 !important;
         border-radius: 25px !important;
         font-size: 16px !important;
         height: 56px !important;
-        min-height: 56px !important;
-        max-height: 56px !important;
-        padding: 0 25px !important;
+        padding: 0 20px !important;
         line-height: 56px !important;
         box-sizing: border-box !important;
     }
