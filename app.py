@@ -50,19 +50,6 @@ st.markdown("""
         width: 100%;
     }
 
-    /* Hide "Press Enter" message */
-    .stTextInput > label {
-        display: block !important;
-    }
-    
-    .stTextInput > label > div[data-testid="stMarkdownContainer"] {
-        display: none !important;
-    }
-    
-    .stTextInput [data-testid="InputInstructions"] {
-        display: none !important;
-    }
-
     /* Text input wrapper */
     .stTextInput > div {
         padding: 0 !important;
@@ -83,6 +70,19 @@ st.markdown("""
         padding: 0 20px !important;
         line-height: 56px !important;
         box-sizing: border-box !important;
+    }
+
+        /* Hide "Press Enter" message */
+    .stTextInput > label {
+        display: block !important;
+    }
+    
+    .stTextInput > label > div[data-testid="stMarkdownContainer"] {
+        display: none !important;
+    }
+    
+    .stTextInput [data-testid="InputInstructions"] {
+        display: none !important;
     }
     
     /* FORCE BUTTON HEIGHT */
