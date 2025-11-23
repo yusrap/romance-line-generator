@@ -168,7 +168,7 @@ col1, col2 = st.columns([1, 2])
 with col1:
     # Portrait image
     st.markdown('<div class="portrait-container">', unsafe_allow_html=True)
-    st.image("https://upload.wikimedia.org/wikipedia/commons/0/05/Juliette_Récamier_%281777-1849%29.jpg", width=180)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
