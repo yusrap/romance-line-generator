@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS to match the design exactly
+# Custom CSS - chat bubble layout
 st.markdown("""
 <style>
     /* White background */
@@ -25,17 +25,16 @@ st.markdown("""
     .block-container {
         padding-top: 3rem;
         padding-bottom: 3rem;
-        max-width: 1000px;
+        max-width: 1100px;
     }
     
-    /* Input box styling - wider and cleaner */
+    /* Input box styling */
     .stTextInput > div > div > input {
         background-color: #f5f5f5;
         border: 1px solid #e8e8e8;
         border-radius: 25px;
         padding: 18px 25px;
         font-size: 16px;
-        width: 100%;
     }
     
     /* Button styling */
@@ -51,30 +50,6 @@ st.markdown("""
     
     .stButton > button:hover {
         background-color: #ff9bb3;
-    }
-    
-    /* Label styling - small pink pills */
-    .label-pill {
-        background-color: #ffb4c8;
-        color: white;
-        padding: 6px 18px;
-        border-radius: 20px;
-        display: inline-block;
-        font-size: 13px;
-        margin-bottom: 15px;
-        font-weight: 400;
-    }
-    
-    /* Message boxes - speech bubble style with shadow */
-    .message-bubble {
-        background-color: white;
-        border-radius: 25px;
-        padding: 25px 30px;
-        margin: 10px 0 40px 0;
-        font-size: 19px;
-        line-height: 1.6;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        color: #333;
     }
     
     /* Title styling */
@@ -93,24 +68,36 @@ st.markdown("""
     }
     
     /* Portrait styling */
-    .portrait-container {
-        text-align: center;
-        margin: 2rem 0;
-    }
-    
-    /* Image styling - circular with pink border */
     img {
         border-radius: 50% !important;
-        border: 6px solid #ffb4c8;
+        border: 6px solid #ffb4c8 !important;
         object-fit: cover;
     }
     
-    /* Spacing adjustments */
-    .stMarkdown {
-        margin-bottom: 0;
+    /* Label pill */
+    .label-pill {
+        background-color: #ffb4c8;
+        color: white;
+        padding: 6px 18px;
+        border-radius: 20px;
+        display: inline-block;
+        font-size: 13px;
+        margin-bottom: 12px;
+        font-weight: 400;
     }
     
-    /* Divider */
+    /* Speech bubble */
+    .speech-bubble {
+        background-color: white;
+        border-radius: 25px;
+        padding: 25px 30px;
+        margin-bottom: 30px;
+        font-size: 19px;
+        line-height: 1.6;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        color: #333;
+    }
+    
     hr {
         margin: 2rem 0;
         border: none;
@@ -162,14 +149,11 @@ Output: "Would you grant me the pleasure of your tender company this lovely even
 
 Now, transform this with beauty and romance:'''
 
-# Main layout
+# Header section
 col1, col2 = st.columns([1, 2.5])
 
 with col1:
-    # Portrait image
-    st.markdown('<div class="portrait-container">', unsafe_allow_html=True)
-    st.image("https://upload.wikimedia.org/wikipedia/commons/0/05/Juliette_Récamier_%281777-1849%29.jpg", width=200)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
 
 with col2:
     st.title("Bring Romance to Dating Apps")
@@ -177,7 +161,7 @@ with col2:
 
 st.markdown("---")
 
-# Initialize session state for messages
+# Initialize session state
 if 'input_message' not in st.session_state:
     st.session_state.input_message = ""
 if 'output_message' not in st.session_state:
@@ -209,11 +193,23 @@ if st.button("Give me a line!"):
     else:
         st.warning("Please enter a message!")
 
-# Display messages if they exist
-if st.session_state.input_message:
-    st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="message-bubble">{st.session_state.input_message}</div>', unsafe_allow_html=True)
-
-if st.session_state.output_message:
-    st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="message-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
+# Display messages WITH portrait in chat layout
+if st.session_state.input_message or st.session_state.output_message:
+    
+    # Create chat layout: portrait on left, bubbles on right
+    chat_col1, chat_col2 = st.columns([1, 4])
+    
+    with chat_col1:
+        # Portrait for chat bubbles
+        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
+    
+    with chat_col2:
+        # Input bubble
+        if st.session_state.input_message:
+            st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="speech-bubble">{st.session_state.input_message}</div>', unsafe_allow_html=True)
+        
+        # Output bubble
+        if st.session_state.output_message:
+            st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="speech-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
