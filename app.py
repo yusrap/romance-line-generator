@@ -79,7 +79,7 @@ st.markdown("""
         background-color: #ffb4c8;
         color: white;
         border-radius: 25px;
-        padding: 0px 30px;
+        padding: 0px 25px;
         font-size: 14px;
         border: none;
         font-weight: 500;
@@ -98,7 +98,7 @@ st.markdown("""
         border: 6px solid #ffb4c8 !important;
         object-fit: cover !important;
         width: 180px !important;
-        height: 180px !important;
+        height: 360px !important;
     }
     
     /* Label pill */
