@@ -73,13 +73,13 @@ st.markdown("""
         color: black !important;   /* <--- forces black text */
     }
 
-    /* FORCE BUTTON HEIGHT */
+    /* FORCE BUTTON HEIGHT WITH WHITE BACKGROUND & PINK BORDER */
     .stButton button {
-        background-color: #ffb4c8 !important;
-        color: white !important;
+        background-color: #ffffff !important;    /* white background */
+        color: #ffb4c8 !important;              /* pink text or change to black if you prefer */
+        border: 2px solid #ffb4c8 !important;   /* pink border */
         border-radius: 25px !important;
         font-size: 14px !important;
-        border: none !important;
         font-weight: 500 !important;
         width: 100% !important;
         height: 56px !important;
@@ -91,8 +91,10 @@ st.markdown("""
         margin: 0 !important;
     }
     
+    /* Optional hover effect */
     .stButton button:hover {
-        background-color: #ff9bb3 !important;
+        background-color: #ffb4c8 !important;   /* pink background on hover */
+        color: #ffffff !important;              /* text turns white on hover */
     }
     
     /* Portrait */
