@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 
-# Page config - force light mode
+# Page config
 st.set_page_config(
     page_title="Romance Line Generator",
     page_icon="💕",
@@ -9,7 +9,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS
+# Custom CSS - FORCE same height
 st.markdown("""
 <style>
     /* Force light mode */
@@ -17,7 +17,6 @@ st.markdown("""
         background-color: white;
     }
     
-    /* White background */
     .main {
         background-color: white !important;
     }
@@ -27,20 +26,13 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Container styling */
     .block-container {
         padding-top: 3rem;
         padding-bottom: 3rem;
         max-width: 1100px;
     }
     
-    /* Center title section */
-    .title-section {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-    
-    /* Title styling - centered */
+    /* Title */
     h1 {
         color: #2d2d2d;
         font-size: 2.8rem;
@@ -58,47 +50,54 @@ st.markdown("""
         width: 100%;
     }
     
-    /* Input box styling - EXACT height */
-    .stTextInput > div > div > input {
-        background-color: #f5f5f5;
-        border: 1px solid #e8e8e8;
-        border-radius: 25px;
-        padding: 0px 25px;
-        font-size: 16px;
-        height: 54px !important;
-        line-height: 54px;
+    /* FORCE INPUT HEIGHT */
+    .stTextInput input {
+        background-color: #f5f5f5 !important;
+        border: 1px solid #e8e8e8 !important;
+        border-radius: 25px !important;
+        font-size: 16px !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        max-height: 56px !important;
+        padding: 0 25px !important;
+        line-height: 56px !important;
+        box-sizing: border-box !important;
     }
     
-    /* Hide the "Press Enter to apply" text */
+    /* Hide "Press Enter" */
     .stTextInput > label > div:last-child {
-        display: none;
+        display: none !important;
     }
     
-    /* Button styling - EXACT same height as input */
-    .stButton > button {
-        background-color: #ffb4c8;
-        color: white;
-        border-radius: 25px;
-        padding: 0px 25px;
-        font-size: 14px;
-        border: none;
-        font-weight: 500;
-        width: 100%;
-        height: 54px !important;
-        line-height: 54px;
+    /* FORCE BUTTON HEIGHT */
+    .stButton button {
+        background-color: #ffb4c8 !important;
+        color: white !important;
+        border-radius: 25px !important;
+        font-size: 14px !important;
+        border: none !important;
+        font-weight: 500 !important;
+        width: 100% !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        max-height: 56px !important;
+        padding: 0 30px !important;
+        line-height: 56px !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
     }
     
-    .stButton > button:hover {
-        background-color: #ff9bb3;
+    .stButton button:hover {
+        background-color: #ff9bb3 !important;
     }
     
-    /* Portrait styling - back to original size */
+    /* Portrait */
     .stImage img {
         border-radius: 50% !important;
         border: 6px solid #ffb4c8 !important;
         object-fit: cover !important;
         width: 180px !important;
-        height: 360px !important;
+        height: 320px !important;
     }
     
     /* Label pill */
@@ -176,7 +175,7 @@ Output: "Would you grant me the pleasure of your tender company this lovely even
 
 Now, transform this with beauty and romance:'''
 
-# Title section - properly centered
+# Title
 st.markdown('<h1 style="text-align: center;">Bring Romance to Dating Apps</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">This one line generator leverages hundreds of pages of letters from "Dangerous Connections" to help you seduce with a romantic touch.</p>', unsafe_allow_html=True)
 
@@ -188,19 +187,16 @@ if 'output_message' not in st.session_state:
 if 'user_input_saved' not in st.session_state:
     st.session_state.user_input_saved = ""
 
-# Chat layout: portrait on left, input/bubbles on right
+# Chat layout
 chat_col1, chat_col2 = st.columns([1, 4])
 
 with chat_col1:
-    # Portrait - back to 180px
     st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
 
 with chat_col2:
-    # Only show input label if there's no output yet
     if not st.session_state.output_message:
         st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
     
-    # Input and button on same line
     col_input, col_button = st.columns([5, 1.5])
     with col_input:
         user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
@@ -208,7 +204,6 @@ with chat_col2:
     with col_button:
         generate_button = st.button("Give me a line!")
     
-    # Function to generate response
     def generate_response(input_text):
         if input_text:
             st.session_state.user_input_saved = input_text
@@ -229,16 +224,13 @@ with chat_col2:
         else:
             st.warning("Please enter a message!")
     
-    # Button click
     if generate_button and user_input:
         generate_response(user_input)
     
-    # Show input bubble (only after generation)
     if st.session_state.user_input_saved and st.session_state.output_message:
         st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="speech-bubble">{st.session_state.user_input_saved}</div>', unsafe_allow_html=True)
     
-    # Output bubble - only show if there's output
     if st.session_state.output_message:
         st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="speech-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
