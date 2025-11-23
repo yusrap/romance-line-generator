@@ -40,7 +40,7 @@ st.markdown("""
         font-size: 2.8rem;
         margin-bottom: 1rem;
         font-weight: 700;
-        text-align: center;
+        text-align: left;
     }
     
     .subtitle {
