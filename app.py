@@ -1,19 +1,25 @@
 import streamlit as st
 from openai import OpenAI
 
-# Page config
+# Page config - force light mode
 st.set_page_config(
     page_title="Romance Line Generator",
     page_icon="💕",
-    layout="centered"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
 # Custom CSS
 st.markdown("""
 <style>
+    /* Force light mode */
+    [data-testid="stAppViewContainer"] {
+        background-color: white;
+    }
+    
     /* White background */
     .main {
-        background-color: white;
+        background-color: white !important;
     }
     
     /* Hide Streamlit branding */
@@ -34,13 +40,13 @@ st.markdown("""
         margin-bottom: 3rem;
     }
     
-    /* Title styling */
+    /* Title styling - centered */
     .main-title {
         color: #2d2d2d;
         font-size: 2.8rem;
         margin-bottom: 1rem;
         font-weight: 700;
-        text-align: left;
+        text-align: center;
     }
     
     .subtitle {
@@ -49,7 +55,7 @@ st.markdown("""
         line-height: 1.6;
         max-width: 800px;
         margin: 0 auto;
-        text-align: left;
+        text-align: center;
     }
     
     /* Input box styling */
@@ -59,30 +65,38 @@ st.markdown("""
         border-radius: 25px;
         padding: 18px 25px;
         font-size: 16px;
+        height: 56px;
     }
     
-    /* Button styling - aligned with input */
+    /* Hide the "Press Enter to apply" text */
+    .stTextInput > label > div:last-child {
+        display: none;
+    }
+    
+    /* Button styling - same height as input */
     .stButton > button {
         background-color: #ffb4c8;
         color: white;
         border-radius: 25px;
-        padding: 18px 30px;
+        padding: 0px 30px;
         font-size: 14px;
         border: none;
         font-weight: 500;
         width: 100%;
-        height: 100%;
+        height: 56px;
     }
     
     .stButton > button:hover {
         background-color: #ff9bb3;
     }
     
-    /* Portrait styling */
-    img {
+    /* Portrait styling - perfect circle */
+    .stImage img {
         border-radius: 50% !important;
         border: 6px solid #ffb4c8 !important;
-        object-fit: cover;
+        object-fit: cover !important;
+        width: 200px !important;
+        height: 200px !important;
     }
     
     /* Label pill */
@@ -178,8 +192,8 @@ if 'user_input_saved' not in st.session_state:
 chat_col1, chat_col2 = st.columns([1, 4])
 
 with chat_col1:
-    # Portrait
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
+    # Portrait - bigger circle
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=200)
 
 with chat_col2:
     # Only show input label if there's no output yet
@@ -190,8 +204,7 @@ with chat_col2:
     col_input, col_button = st.columns([5, 1.5])
     with col_input:
         user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
-                                  label_visibility="collapsed", key="input_field",
-                                  on_change=None)
+                                  label_visibility="collapsed", key="input_field")
     with col_button:
         generate_button = st.button("Give me a line!")
     
@@ -216,7 +229,7 @@ with chat_col2:
         else:
             st.warning("Please enter a message!")
     
-    # Button click or Enter key
+    # Button click
     if generate_button and user_input:
         generate_response(user_input)
     
