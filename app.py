@@ -181,11 +181,18 @@ with chat_col1:
 with chat_col2:
     # Input bubble with label
     st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
-    user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
-                              label_visibility="collapsed", key="input_field")
     
-    # Button
-    if st.button("Give me a line!"):
+    # Input and button on same line
+    col_input, col_button = st.columns([4, 1])
+    with col_input:
+        user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
+                                  label_visibility="collapsed", key="input_field")
+    with col_button:
+        st.write("")  # Spacer to align button with input
+        generate_button = st.button("Give me a line!")
+    
+    # Button logic
+    if generate_button:
         if user_input:
             st.session_state.user_input = user_input
             with st.spinner("Crafting your romantic message..."):
