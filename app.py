@@ -133,6 +133,18 @@ st.markdown("""
         border: none;
         border-top: 1px solid #e8e8e8;
     }
+
+    /* Mobile-specific styling */
+    @media (max-width: 768px) {
+        .stImage img {
+            border-radius: 50% !important;  /* circle */
+            width: 150px !important;         /* optional smaller size for mobile */
+            height: 150px !important;        /* make it square for perfect circle */
+            object-fit: cover !important;
+            border: 4px solid #ffb4c8 !important; /* optional border */
+        }
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
