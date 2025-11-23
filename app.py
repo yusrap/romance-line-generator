@@ -61,16 +61,17 @@ st.markdown("""
         font-size: 16px;
     }
     
-    /* Button styling - smaller */
+    /* Button styling - aligned with input */
     .stButton > button {
         background-color: #ffb4c8;
         color: white;
         border-radius: 25px;
-        padding: 12px 30px;
+        padding: 18px 30px;
         font-size: 14px;
         border: none;
         font-weight: 500;
         width: 100%;
+        height: 100%;
     }
     
     .stButton > button:hover {
@@ -170,8 +171,8 @@ st.markdown("---")
 # Initialize session state
 if 'output_message' not in st.session_state:
     st.session_state.output_message = ""
-if 'user_input' not in st.session_state:
-    st.session_state.user_input = ""
+if 'user_input_saved' not in st.session_state:
+    st.session_state.user_input_saved = ""
 
 # Chat layout: portrait on left, input/bubbles on right
 chat_col1, chat_col2 = st.columns([1, 4])
@@ -181,44 +182,50 @@ with chat_col1:
     st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
 
 with chat_col2:
+    # Only show input label if there's no output yet
+    if not st.session_state.output_message:
+        st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
+    
     # Input and button on same line
     col_input, col_button = st.columns([5, 1.5])
     with col_input:
         user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
-                                  label_visibility="collapsed", key="input_field")
+                                  label_visibility="collapsed", key="input_field",
+                                  on_change=None)
     with col_button:
-        st.write("")  # Spacer to align button with input
         generate_button = st.button("Give me a line!")
     
-    # Button logic
-    if generate_button:
-        if user_input:
-            st.session_state.user_input = user_input
+    # Function to generate response
+    def generate_response(input_text):
+        if input_text:
+            st.session_state.user_input_saved = input_text
             with st.spinner("Crafting your romantic message..."):
                 try:
                     response = client.chat.completions.create(
                         model='gpt-3.5-turbo',
                         messages=[
                             {'role': 'system', 'content': get_system_prompt()},
-                            {'role': 'user', 'content': user_input}
+                            {'role': 'user', 'content': input_text}
                         ],
                         temperature=0.8
                     )
-                    
                     st.session_state.output_message = response.choices[0].message.content
                     st.rerun()
-                    
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
         else:
             st.warning("Please enter a message!")
     
-    # Show input bubble (only after generation)
-    if st.session_state.user_input and st.session_state.output_message:
-        st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="speech-bubble">{st.session_state.user_input}</div>', unsafe_allow_html=True)
+    # Button click or Enter key
+    if generate_button and user_input:
+        generate_response(user_input)
     
-    # Output bubble - only show if there's actually output
-    if st.session_state.output_message and st.session_state.user_input:
+    # Show input bubble (only after generation)
+    if st.session_state.user_input_saved and st.session_state.output_message:
+        st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="speech-bubble">{st.session_state.user_input_saved}</div>', unsafe_allow_html=True)
+    
+    # Output bubble - only show if there's output
+    if st.session_state.output_message:
         st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="speech-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
