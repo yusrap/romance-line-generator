@@ -8,51 +8,118 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS
+# Custom CSS to match the design
 st.markdown("""
 <style>
+    /* White background */
     .main {
-        background-color: #fff5f7;
-    }
-    .stTextInput > div > div > input {
         background-color: white;
-        border: 2px solid #ffb6c1;
-        border-radius: 10px;
-        padding: 10px;
     }
+    
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Container styling */
+    .block-container {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        max-width: 900px;
+    }
+    
+    /* Input box styling */
+    .stTextInput > div > div > input {
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 20px;
+        padding: 15px 20px;
+        font-size: 16px;
+    }
+    
+    /* Button styling */
     .stButton > button {
-        background-color: #ff69b4;
+        background-color: #ffb4c8;
         color: white;
-        border-radius: 10px;
-        padding: 10px 30px;
+        border-radius: 20px;
+        padding: 12px 40px;
         font-size: 16px;
         border: none;
-        width: 100%;
+        font-weight: 500;
     }
+    
     .stButton > button:hover {
-        background-color: #ff1493;
+        background-color: #ff9bb3;
     }
-    .output-box {
-        background-color: white;
+    
+    /* Output boxes */
+    .input-label {
+        background-color: #ffb4c8;
+        color: white;
+        padding: 8px 20px;
         border-radius: 15px;
-        padding: 20px;
-        margin: 20px 0;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-        color: #d1477a;
-        text-align: center;
-    }
-    .subtitle {
-        text-align: center;
-        color: #666;
+        display: inline-block;
         font-size: 14px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+    
+    .output-label {
+        background-color: #ffb4c8;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 15px;
+        display: inline-block;
+        font-size: 14px;
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+    
+    .message-box {
+        background-color: #f8f9fa;
+        border-radius: 20px;
+        padding: 20px 25px;
+        margin: 10px 0 30px 0;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+    
+    /* Title styling */
+    h1 {
+        color: #333;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .subtitle {
+        color: #666;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        line-height: 1.5;
+    }
+    
+    /* Portrait styling */
+    .portrait-container {
+        text-align: center;
+        margin: 2rem 0;
+    }
+    
+    /* Hide default streamlit image styling */
+    .stImage {
+        text-align: center;
+    }
+    
+    img {
+        border-radius: 50% !important;
+        border: 5px solid #ffb4c8;
+        object-fit: cover;
+        width: 180px !important;
+        height: 180px !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize OpenAI client with API key from secrets
+# Initialize OpenAI client
 client = OpenAI(api_key=st.secrets["API_KEY"])
 
 # Top words list
@@ -70,7 +137,6 @@ top_words = ['love', 'think', 'know', 'time', 'friend', 'thing', 'letter', 'litt
 
 word_list_string = ', '.join(top_words[:50])
 
-# System prompt
 def get_system_prompt():
     return f'''You are a world-famous romance writer creating elegant, charming pick-up lines inspired by 18th-century letters.
 
@@ -96,29 +162,37 @@ Output: "Would you grant me the pleasure of your tender company this lovely even
 
 Now, transform this with beauty and romance:'''
 
-# Header
-st.title("💕 Bring Romance to Dating Apps")
-st.markdown('<p class="subtitle">Transform casual messages into elegant 18th-century romantic language</p>', 
-            unsafe_allow_html=True)
+# Main layout
+col1, col2 = st.columns([1, 2])
+
+with col1:
+    # Portrait image
+    st.markdown('<div class="portrait-container">', unsafe_allow_html=True)
+    st.image("Juliette_Récamier_(1777-1849).jpg", width=180)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col2:
+    st.title("Bring Romance to Dating Apps")
+    st.markdown('<p class="subtitle">This one line generator leverages hundreds of pages of letters from "Dangerous Connections" to help you seduce with a romantic touch.</p>', unsafe_allow_html=True)
 
 st.markdown("---")
 
-# Input section
-user_input = st.text_input("", placeholder="Type your casual message here... (e.g., 'hey what's up?')", 
-                          label_visibility="collapsed")
+# Initialize session state for messages
+if 'input_message' not in st.session_state:
+    st.session_state.input_message = ""
+if 'output_message' not in st.session_state:
+    st.session_state.output_message = ""
 
-# Generate button
-if st.button("✨ Give me a romantic line!"):
+# Input section
+user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
+                          label_visibility="collapsed", key="user_input")
+
+# Button
+if st.button("Give me a line!"):
     if user_input:
+        st.session_state.input_message = user_input
         with st.spinner("Crafting your romantic message..."):
             try:
-                # Create the prompt
-                history = [
-                    {'role': 'user', 'content': get_system_prompt()},
-                    {'role': 'user', 'content': user_input}
-                ]
-                
-                # Get response
                 response = client.chat.completions.create(
                     model='gpt-3.5-turbo',
                     messages=[
@@ -128,30 +202,18 @@ if st.button("✨ Give me a romantic line!"):
                     temperature=0.8
                 )
                 
-                output_text = response.choices[0].message.content
+                st.session_state.output_message = response.choices[0].message.content
                 
-                # Display output
-                st.markdown('<div class="output-box">', unsafe_allow_html=True)
-                st.markdown(f'### 💌 Romantic Version:')
-                st.markdown(f'*"{output_text}"*')
-                st.markdown('</div>', unsafe_allow_html=True)
-                
-                # Check word usage
-                words_used = [word for word in top_words[:50] if word in output_text.lower()]
-                
-                # Stats
-                with st.expander("📊 See details"):
-                    st.write(f"**Words from source text used:** {len(words_used)}")
-                    if words_used:
-                        st.write(f"**Words:** {', '.join(words_used[:10])}")
-                    st.write(f"**Output length:** {len(output_text.split())} words")
-                    
             except Exception as e:
                 st.error(f"Error: {str(e)}")
     else:
-        st.warning("Please enter a message to transform!")
+        st.warning("Please enter a message!")
 
-# Footer
-st.markdown("---")
-st.markdown('<p style="text-align: center; color: #999; font-size: 12px;">Powered by "Dangerous Connections" by De Laclos</p>', 
-            unsafe_allow_html=True)
+# Display messages if they exist
+if st.session_state.input_message:
+    st.markdown('<span class="input-label">input</span>', unsafe_allow_html=True)
+    st.markdown(f'<div class="message-box">{st.session_state.input_message}</div>', unsafe_allow_html=True)
+
+if st.session_state.output_message:
+    st.markdown('<span class="output-label">romantic version</span>', unsafe_allow_html=True)
+    st.markdown(f'<div class="message-box">{st.session_state.output_message}</div>', unsafe_allow_html=True)
