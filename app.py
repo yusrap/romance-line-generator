@@ -9,7 +9,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS with mobile fixes
+# Custom CSS - FORCE same height
 st.markdown("""
 <style>
     /* Force light mode */
@@ -32,17 +32,17 @@ st.markdown("""
         max-width: 1100px;
     }
     
-    /* Title - FORCE dark color */
+    /* Title */
     h1 {
         color: #2d2d2d !important;
         font-size: 2.8rem;
         margin-bottom: 1rem;
-        font-weight: 700 !important;
+        font-weight: 700;
         text-align: center !important;
     }
     
     .subtitle {
-        color: #666 !important;
+        color: #666;
         font-size: 1.1rem;
         line-height: 1.6;
         text-align: center !important;
@@ -50,11 +50,17 @@ st.markdown("""
         width: 100%;
     }
 
-    /* Text input - fix black corners */
+    /* Text input wrapper */
     .stTextInput > div {
-        background-color: transparent !important;
+        padding: 0 !important;
+        border-radius: 25px !important;
+        overflow: visible !important;  /* Prevent curve clipping */
+        height: 56px !important;
+        display: flex !important;
+        align-items: center !important;
     }
     
+    /* Actual input element */
     .stTextInput input {
         background-color: #f5f5f5 !important;
         border: 1px solid #e8e8e8 !important;
@@ -62,7 +68,7 @@ st.markdown("""
         font-size: 16px !important;
         height: 56px !important;
         padding: 0 20px !important;
-        line-height: normal !important;
+        line-height: 56px !important;
         box-sizing: border-box !important;
     }
 
@@ -76,7 +82,10 @@ st.markdown("""
         font-weight: 500 !important;
         width: 100% !important;
         height: 56px !important;
+        min-height: 56px !important;
+        max-height: 56px !important;
         padding: 0 30px !important;
+        line-height: 56px !important;
         box-sizing: border-box !important;
         margin: 0 !important;
     }
@@ -91,7 +100,7 @@ st.markdown("""
         border: 6px solid #ffb4c8 !important;
         object-fit: cover !important;
         width: 180px !important;
-        height: 180px !important;
+        height: 320px !important;
     }
     
     /* Label pill */
@@ -122,52 +131,6 @@ st.markdown("""
         margin: 2.5rem 0;
         border: none;
         border-top: 1px solid #e8e8e8;
-    }
-    
-    /* MOBILE STYLES */
-    @media (max-width: 768px) {
-        h1 {
-            font-size: 2rem !important;
-            color: #2d2d2d !important;
-        }
-        
-        .subtitle {
-            font-size: 1rem !important;
-            color: #666 !important;
-        }
-        
-        .block-container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-        
-        /* Make portrait smaller and centered on mobile */
-        .stImage {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .stImage img {
-            width: 120px !important;
-            height: 120px !important;
-        }
-        
-        /* Stack columns on mobile */
-        [data-testid="column"] {
-            width: 100% !important;
-            flex: 100% !important;
-            max-width: 100% !important;
-        }
-        
-        /* Adjust input/button layout for mobile */
-        .stTextInput input {
-            font-size: 14px !important;
-        }
-        
-        .stButton button {
-            font-size: 13px !important;
-            padding: 0 20px !important;
-        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -216,8 +179,8 @@ Output: "Would you grant me the pleasure of your tender company this lovely even
 Now, transform this with beauty and romance:'''
 
 # Title
-st.markdown('<h1 style="text-align: center; color: #2d2d2d !important;">Bring Romance to Dating Apps</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle" style="color: #666 !important;">This one line generator leverages hundreds of pages of letters from "Dangerous Connections" to help you seduce with a romantic touch.</p>', unsafe_allow_html=True)
+st.markdown('<h1 style="text-align: center;">Bring Romance to Dating Apps</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">This one line generator leverages hundreds of pages of letters from "Dangerous Connections" to help you seduce with a romantic touch.</p>', unsafe_allow_html=True)
 
 st.markdown("---")
 
