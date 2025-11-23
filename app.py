@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS - chat bubble layout
+# Custom CSS
 st.markdown("""
 <style>
     /* White background */
@@ -26,6 +26,28 @@ st.markdown("""
         padding-top: 3rem;
         padding-bottom: 3rem;
         max-width: 1100px;
+    }
+    
+    /* Center title section */
+    .title-section {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    /* Title styling */
+    .main-title {
+        color: #2d2d2d;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+    
+    .subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
     }
     
     /* Input box styling */
@@ -46,25 +68,11 @@ st.markdown("""
         font-size: 16px;
         border: none;
         font-weight: 500;
+        margin-bottom: 20px;
     }
     
     .stButton > button:hover {
         background-color: #ff9bb3;
-    }
-    
-    /* Title styling */
-    h1 {
-        color: #2d2d2d;
-        font-size: 2.8rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
-    
-    .subtitle {
-        color: #666;
-        font-size: 1.1rem;
-        margin-bottom: 2.5rem;
-        line-height: 1.6;
     }
     
     /* Portrait styling */
@@ -99,7 +107,7 @@ st.markdown("""
     }
     
     hr {
-        margin: 2rem 0;
+        margin: 2.5rem 0;
         border: none;
         border-top: 1px solid #e8e8e8;
     }
@@ -149,67 +157,62 @@ Output: "Would you grant me the pleasure of your tender company this lovely even
 
 Now, transform this with beauty and romance:'''
 
-# Header section
-col1, col2 = st.columns([1, 2.5])
-
-with col1:
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
-
-with col2:
-    st.title("Bring Romance to Dating Apps")
-    st.markdown('<p class="subtitle">This one line generator leverages hundreds of pages of letters from "Dangerous Connections" to help you seduce with a romantic touch.</p>', unsafe_allow_html=True)
+# Centered title section
+st.markdown('<div class="title-section">', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">Bring Romance to Dating Apps</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">This one line generator leverages hundreds of pages of letters from "Dangerous Connections" to help you seduce with a romantic touch.</p>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 
 # Initialize session state
-if 'input_message' not in st.session_state:
-    st.session_state.input_message = ""
 if 'output_message' not in st.session_state:
     st.session_state.output_message = ""
+if 'user_input' not in st.session_state:
+    st.session_state.user_input = ""
 
-# Input section
-user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
-                          label_visibility="collapsed", key="user_input")
+# Chat layout: portrait on left, input/bubbles on right
+chat_col1, chat_col2 = st.columns([1, 4])
 
-# Button
-if st.button("Give me a line!"):
-    if user_input:
-        st.session_state.input_message = user_input
-        with st.spinner("Crafting your romantic message..."):
-            try:
-                response = client.chat.completions.create(
-                    model='gpt-3.5-turbo',
-                    messages=[
-                        {'role': 'system', 'content': get_system_prompt()},
-                        {'role': 'user', 'content': user_input}
-                    ],
-                    temperature=0.8
-                )
-                
-                st.session_state.output_message = response.choices[0].message.content
-                
-            except Exception as e:
-                st.error(f"Error: {str(e)}")
-    else:
-        st.warning("Please enter a message!")
+with chat_col1:
+    # Portrait
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
 
-# Display messages WITH portrait in chat layout
-if st.session_state.input_message or st.session_state.output_message:
+with chat_col2:
+    # Input bubble with label
+    st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
+    user_input = st.text_input("Your message", placeholder="Type your casual message here...", 
+                              label_visibility="collapsed", key="input_field")
     
-    # Create chat layout: portrait on left, bubbles on right
-    chat_col1, chat_col2 = st.columns([1, 4])
+    # Button
+    if st.button("Give me a line!"):
+        if user_input:
+            st.session_state.user_input = user_input
+            with st.spinner("Crafting your romantic message..."):
+                try:
+                    response = client.chat.completions.create(
+                        model='gpt-3.5-turbo',
+                        messages=[
+                            {'role': 'system', 'content': get_system_prompt()},
+                            {'role': 'user', 'content': user_input}
+                        ],
+                        temperature=0.8
+                    )
+                    
+                    st.session_state.output_message = response.choices[0].message.content
+                    st.rerun()
+                    
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+        else:
+            st.warning("Please enter a message!")
     
-    with chat_col1:
-        # Portrait for chat bubbles
-        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Juliette_Récamier_%281777-1849%29.jpg/500px-Juliette_Récamier_%281777-1849%29.jpg", width=180)
+    # Show input bubble (only after generation)
+    if st.session_state.user_input and st.session_state.output_message:
+        st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="speech-bubble">{st.session_state.user_input}</div>', unsafe_allow_html=True)
     
-    with chat_col2:
-        # Input bubble
-        if st.session_state.input_message:
-            st.markdown('<div class="label-pill">input</div>', unsafe_allow_html=True)
-            st.markdown(f'<div class="speech-bubble">{st.session_state.input_message}</div>', unsafe_allow_html=True)
-        
-        # Output bubble
-        if st.session_state.output_message:
-            st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
-            st.markdown(f'<div class="speech-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
+    # Output bubble
+    if st.session_state.output_message:
+        st.markdown('<div class="label-pill">romantic version</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="speech-bubble">{st.session_state.output_message}</div>', unsafe_allow_html=True)
